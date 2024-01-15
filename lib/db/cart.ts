@@ -20,10 +20,17 @@ export async function getCart():Promise<ShoppingCart|null> {
     }
 }
 
-export async function createCart() {
+export async function createCart():Promise<ShoppingCart> {
     const newCart = await prisma.cart.create({
         data:{}
     })
 
     cookies().set("localCartId",newCart.id)
+
+    return {
+        ...newCart,
+        items:[],
+        size:0,
+        subtotal:0
+    }
 }
